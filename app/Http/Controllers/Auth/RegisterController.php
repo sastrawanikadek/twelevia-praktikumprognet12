@@ -41,6 +41,12 @@ class RegisterController extends Controller
     {
         $this->middleware('guest');
         $this->middleware('guest:admin');
+
+        \Cloudinary::config(array(
+            "cloud_name" => "dbpbpokhx",
+            "api_key" => "224568426731156",
+            "api_secret" => "BrRWdDBVJlaS1f8zmbUNNTk6Ymg"
+        ));
     }
 
     /**
@@ -70,26 +76,39 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'profile_image' => $data['profile_image'],
-            'status' => $data['status'],
+            'profile_image' => 'https://res.cloudinary.com/dbpbpokhx/image/upload/v1558610104/tmdw3qdx5f5t1itnmz7l.png',
+            'status' => '1',
         ]);
     }
 
     public function adminRegisterForm()
     {
-        return view('auth.register', ['url' => 'admin']);
+        return view('auth.register-admin');
     }
 
     public function adminRegister(Request $request)
     {
         // $this->validator($request->all())->validate();
-        $admin = Admin::create([
-            'name' => $request['name'],
-            'username' => $request['username'],
-            'password' => Hash::make($request['password']),
-            'profile_image' => $request['profile_image'],
-            'phone' => $request['phone'],
-        ]);
-        return redirect()->intended('login/admin');
+
+        if(isset($request->profile_image)){
+            if($request->file("profile_image")->extension() == "jpg" || $request->file("profile_image")->extension() == "png" || 
+            $request->file("profile_image")->extension() == "jpeg"){
+                if(($request->file("profile_image")->getSize() / 1000) <= 1024){
+                    $upload = \Cloudinary\Uploader::upload($request->file("profile_image"));
+
+                    $admin = Admin::create([
+                        'name' => $request['name'],
+                        'username' => $request['username'],
+                        'password' => Hash::make($request['password']),
+                        'profile_image' => $upload["secure_url"],
+                        'phone' => $request['phone'],
+                    ]);
+                    return redirect()->intended('login/admin');                   
+                }
+                return redirect()->back()->with("warning", "Maximum size is 1MB");
+            }
+            return redirect()->back()->with("warning", "Only jpg, jpeg, or png are allowed");
+        }
+        return redirect()->back()->with("warning", "Please fill in all fields");
     }
 }
