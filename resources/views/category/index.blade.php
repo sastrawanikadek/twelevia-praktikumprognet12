@@ -39,14 +39,25 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Name</th>
+                                <th>Type</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @for ($i = 0; $i < count($categories); $i++)
+                                @php
+                                    if($categories[$i]->category_type == '1'){
+                                        $type = 'Women';
+                                    } elseif($categories[$i]->category_type == '2'){
+                                        $type = 'Men';
+                                    } else {
+                                        $type = 'Kid';
+                                    }
+                                @endphp
                                 <tr>
                                     <td>{{ $i + 1 }}</td>
                                     <td>{{ $categories[$i]->category_name }}</td>
+                                    <td>{{ $type }}</td>
                                     <td>
                                         <form action="/admin/category/{{ $categories[$i]->id }}/edit" method="GET" class="btn-group">
                                             <button type="submit" class="btn btn-warning" title="Edit">

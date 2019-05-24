@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Categories
+    Products
 @endsection
 
 @section('css')
@@ -69,16 +69,19 @@
         <div class="col-xs-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">List of Category</h3>
-                    <button type="button" id="show-modal" class="btn btn-primary"><i class="fa fa-plus"></i>Create Category</button>
+                    <h3 class="box-title">List of Product</h3>
                 </div>
                 <div class="box-body">
-                    <table id="categories" class="table table-bordered table-striped">
+                    <table id="products" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>No.</th>
                                 <th>Name</th>
-                                <th>Type</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Weight</th>
+                                <th>Rate</th>
+                                <th>Description</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -90,32 +93,39 @@
     </div>
 
     <div id="modal" class="modal-wrapper">
-        <div class="overlay"></div>
+        <div class="overlay" data-id="{{ $product->id }}"></div>
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">Create Category</h3>
-                <button type="button" id="close-modal" class="btn btn-flat btn-white">
+                <h3 class="box-title">Create Discount</h3>
+                <button type="button" id="close-modal" data-id="{{ $product->id }}" class="btn btn-flat btn-white">
                     <i class="fa fa-close"></i>
                     Close
                 </button>
             </div>
-            <form action="/admin/category" method="POST">
+            <form action="/admin/discount" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="box-body">
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Category name" />
+                        <label for="id">Product ID</label>
+                        <input type="text" id="id" name="id" class="form-control" placeholder="Product ID" value="{{ $product->id }}" readonly />
                     </div>
                     <div class="form-group">
-                        <label for="type">Type</label>
-                        <select name="type" id="type" class="form-control">
-                            <option value="">None</option>
-                            <option value="1">Women</option>
-                            <option value="2">Men</option>
-                            <option value="3">Kid</option>
-                        </select>
+                        <label for="name">Product Name</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Product name" value="{{ $product->product_name }}" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label for="discount">Product Discount</label>
+                        <input type="number" min="1" max="100" id="discount" name="discount" class="form-control" placeholder="Product discount" />
+                    </div>
+                    <div class="form-group">
+                        <label for="start">Start Date</label>
+                        <input type="date" id="start" name="start" class="form-control" placeholder="Start date discount " />
+                    </div>
+                    <div class="form-group">
+                        <label for="end">End Date</label>
+                        <input type="date" id="end" name="end" class="form-control" placeholder="End date discount" />
                     </div>
                 </div>
                 <div class="box-footer">
@@ -133,15 +143,17 @@
     <!-- Custom Script -->
     <script>
         $("#close-modal").click(function(){
-            window.location.href = "/admin/category";
+            const id = $(this).data("id");
+            window.location.href = "/admin/discount/" + id;
         });
 
         $(".overlay").eq(0).click(function(){
-            window.location.href = "/admin/category";
+            const id = $(this).data("id");
+            window.location.href = "/admin/discount/" + id;
         });
 
         $(function() {
-            $("#categories").DataTable();
+            $("#products").DataTable();
         });
     </script>
 @endsection

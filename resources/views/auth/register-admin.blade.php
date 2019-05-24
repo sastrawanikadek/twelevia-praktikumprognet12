@@ -141,6 +141,10 @@
             const files = e.target.files;
 
             if(files.length > 0){
+                $("#profile-image").css({
+                    "background-color": "white"
+                });
+
                 $("#profile-image .fa").eq(0).css({
                     "display": "none"
                 });
@@ -151,6 +155,10 @@
                     "display": "block"
                 });
             } else {
+                $("#profile-image").css({
+                    "background-color": "gainsboro"
+                });
+
                 $("#profile-image .fa").eq(0).css({
                     "display": "block"
                 });

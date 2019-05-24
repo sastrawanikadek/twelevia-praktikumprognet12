@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Product Images
+    Discounts
 @endsection
 
 @section('css')
@@ -30,41 +30,43 @@
         <div class="col-xs-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">List of Product</h3>
+                    <h3 class="box-title">List of Product Discounts</h3>
+                    <form action="/admin/discount/create" method="GET">
+                        <button type="submit" id="create" class="btn btn-primary" name="id" value="{{ $product->id }}"><i class="fa fa-plus"></i>Create Discount</button>
+                    </form>
                 </div>
                 <div class="box-body">
-                    <table id="products" class="table table-bordered table-striped">
+                    <table id="discounts" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>No.</th>
                                 <th>Name</th>
-                                <th>Price</th>
-                                <th>Stock</th>
-                                <th>Weight</th>
-                                <th>Rate</th>
-                                <th>Description</th>
+                                <th>Percentage</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @for ($i = 0; $i < count($products); $i++)
+                            @for ($i = 0; $i < count($discounts); $i++)
                                 <tr>
                                     <td>{{ $i + 1 }}</td>
-                                    <td>{{ $products[$i]->product_name }}</td>
-                                    <td>{{ $products[$i]->price }}</td>
-                                    <td>{{ $products[$i]->stock }}</td>
-                                    <td>{{ $products[$i]->weight }}</td>
-                                    <td>{{ $products[$i]->product_rate }}</td>
-                                    <td>{{ str_limit($products[$i]->description, 50, " ...") }}</td>
+                                    <td>{{ $product->product_name }}</td>
+                                    <td>{{ $discounts[$i]->percentage }}</td>
+                                    <td>{{ $discounts[$i]->start }}</td>
+                                    <td>{{ $discounts[$i]->end }}</td>
                                     <td>
-                                        <form action="/admin/product-image/{{ $products[$i]->id }}" method="GET" class="btn-group">
-                                            <button type="submit" class="btn btn-primary" title="View">
-                                                <i class="fa fa-eye"></i>
+                                        <form action="/admin/discount/{{ $discounts[$i]->id }}/edit" method="GET" class="btn-group">
+                                            <button type="submit" class="btn btn-primary" title="Edit">
+                                                <i class="fa fa-pencil"></i>
                                             </button>
                                         </form>
-                                        <form action="/admin/product-image/create" method="GET" class="btn-group">
-                                            <button type="submit" name="id" value="{{ $products[$i]->id }}" class="btn btn-primary" title="Create">
-                                                <i class="fa fa-plus"></i>
+                                        <form action="/admin/discount/{{ $discounts[$i]->id }}" method="POST" class="btn-group">
+                                            @csrf
+                                            @method("DELETE")
+
+                                            <button type="submit" class="btn btn-primary" title="Delete">
+                                                <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
                                     </td>
@@ -85,7 +87,7 @@
     <!-- Custom Script -->
     <script>
         $(function() {
-            $("#products").DataTable();
+            $("#discounts").DataTable();
         });
     </script>
 @endsection

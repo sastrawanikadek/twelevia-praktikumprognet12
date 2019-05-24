@@ -93,12 +93,12 @@
     </div>
 
     <div id="modal" class="modal-wrapper">
-        <div class="overlay"></div>
+        <div class="overlay" data-id="{{ $product->id }}"></div>
 
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Create Product Image</h3>
-                <button type="button" id="close-modal" class="btn btn-flat btn-white">
+                <button type="button" id="close-modal" data-id="{{ $product->id }}" class="btn btn-flat btn-white">
                     <i class="fa fa-close"></i>
                     Close
                 </button>
@@ -136,11 +136,13 @@
     <!-- Custom Script -->
     <script>
         $("#close-modal").click(function(){
-            window.location.href = "/admin/product-image";
+            const id = $(this).data("id");
+            window.location.href = "/admin/product-image/" + id;
         });
 
         $(".overlay").eq(0).click(function(){
-            window.location.href = "/admin/product-image";
+            const id = $(this).data("id");
+            window.location.href = "/admin/product-image/" + id;
         });
 
         $("#image-click-label").click(function(){

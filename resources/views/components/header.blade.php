@@ -70,7 +70,7 @@
             </div>
             <!-- Cart Area -->
             <div class="cart-area">
-                <a href="#" id="essenceCartBtn"><img src="{{ asset("img/bag.svg") }}" alt=""> <span>3</span></a>
+                <a href="#" id="essenceCartBtn"><img src="{{ asset("img/bag.svg") }}" alt=""> <span>{{ isset($quantity) ? $quantity : '' }}</span></a>
             </div>
         </div>
 

@@ -48,15 +48,19 @@ class CategoryController extends Controller
     {
         if(isset($request->name)){
             $name = $request->name;
+            $type = $request->type;
+            $count = DB::table("product_categories")->where("category_name", $name)->where("category_type", $type)->count();
 
-            date_default_timezone_set('Asia/Kuala_Lumpur');
-            
-            DB::table("product_categories")->insert(
-                ["category_name" => $name, "status" => "1"]
-            );
+            if($count == 0){
+                date_default_timezone_set('Asia/Kuala_Lumpur');
+                
+                DB::table("product_categories")->insert(
+                    ["category_name" => $name, "category_type" => $type, "status" => "1"]
+                );
 
-            return redirect()->action('CategoryController@index')->with("success", "Successfully create category");
-            
+                return redirect()->action('CategoryController@index')->with("success", "Successfully create category");
+            }
+            return redirect()->action('CategoryController@create')->with("warning", "Category already exists");
         }
         return redirect()->action('CategoryController@create')->with("warning", "Please fill in all fields");
     }
@@ -95,15 +99,19 @@ class CategoryController extends Controller
     {
         if(isset($request->name)){
             $name = $request->name;
+            $type = $request->type;
+            $category = DB::table("product_categories")->where("category_name", $name)->where("category_type", $type)->first();
 
-            date_default_timezone_set('Asia/Kuala_Lumpur');
-            
-            DB::table("product_categories")->where("id", $id)->update(
-                ["category_name" => $name]
-            );
+            if($category->id == $id){
+                date_default_timezone_set('Asia/Kuala_Lumpur');
+                
+                DB::table("product_categories")->where("id", $id)->update(
+                    ["category_name" => $name]
+                );
 
-            return redirect()->action('CategoryController@index')->with("success", "Successfully edit category");
-            
+                return redirect()->action('CategoryController@index')->with("success", "Successfully edit category");
+            }
+            return redirect()->action('CategoryController@edit', ["id" => $id])->with("warning", "Category already exists");
         }
         return redirect()->action('CategoryController@edit', ["id" => $id])->with("warning", "Please fill in all fields");
     }

@@ -1,4 +1,4 @@
-@extends('layouts.pages')
+@extends('layouts.pages', ['quantity' => isset($quantity) ? $quantity : null, 'carts' => isset($carts) ? $carts : null])
 
 @section('title')
     Twelevia

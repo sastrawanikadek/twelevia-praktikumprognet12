@@ -1,7 +1,15 @@
-@extends('layouts.pages')
+@extends('layouts.pages', ['quantity' => isset($quantity) ? $quantity : null, 'carts' => isset($carts) ? $carts : null])
 
 @section('title')
     Shop
+@endsection
+
+@section('css')
+   <style>
+       .collapse.in{
+           display: block !important;
+       }
+   </style> 
 @endsection
 
 @section('content')
@@ -11,7 +19,11 @@
             <div class="row h-100 align-items-center">
                 <div class="col-12">
                     <div class="page-title text-center">
-                        <h2>dresses</h2>
+                        @if (isset($category))
+                            <h2>{{ $category }} ({{ $type }})</h2>
+                        @else
+                            <h2>Shop</h2>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -29,116 +41,43 @@
                         <!-- ##### Single Widget ##### -->
                         <div class="widget catagory mb-50">
                             <!-- Widget Title -->
-                            <h6 class="widget-title mb-30">Catagories</h6>
-
+                            <h6 class="widget-title mb-30">Categories</h6>
                             <!--  Catagories  -->
                             <div class="catagories-menu">
                                 <ul id="menu-content2" class="menu-content collapse show">
                                     <!-- Single Item -->
-                                    <li data-toggle="collapse" data-target="#clothing">
-                                        <a href="#">clothing</a>
-                                        <ul class="sub-menu collapse show" id="clothing">
-                                            <li><a href="#">All</a></li>
-                                            <li><a href="#">Bodysuits</a></li>
-                                            <li><a href="#">Dresses</a></li>
-                                            <li><a href="#">Hoodies &amp; Sweats</a></li>
-                                            <li><a href="#">Jackets &amp; Coats</a></li>
-                                            <li><a href="#">Jeans</a></li>
-                                            <li><a href="#">Pants &amp; Leggings</a></li>
-                                            <li><a href="#">Rompers &amp; Jumpsuits</a></li>
-                                            <li><a href="#">Shirts &amp; Blouses</a></li>
-                                            <li><a href="#">Shirts</a></li>
-                                            <li><a href="#">Sweaters &amp; Knits</a></li>
+                                    <li data-toggle="collapse" data-target="#women">
+                                        <a href="#">Women</a>
+                                    <ul class="sub-menu collapse {{ isset($type) && $type == 'Women' ? 'in' : '' }}" id="women">
+                                            @foreach ($categories as $item)
+                                                @if ($item->category_type == "1")
+                                                    <li><a href="/shop/Women/{{ $item->category_name }}">{{ $item->category_name }}</a></li>
+                                                @endif
+                                            @endforeach
                                         </ul>
                                     </li>
                                     <!-- Single Item -->
-                                    <li data-toggle="collapse" data-target="#shoes" class="collapsed">
-                                        <a href="#">shoes</a>
-                                        <ul class="sub-menu collapse" id="shoes">
-                                            <li><a href="#">All</a></li>
-                                            <li><a href="#">Bodysuits</a></li>
-                                            <li><a href="#">Dresses</a></li>
-                                            <li><a href="#">Hoodies &amp; Sweats</a></li>
-                                            <li><a href="#">Jackets &amp; Coats</a></li>
-                                            <li><a href="#">Jeans</a></li>
-                                            <li><a href="#">Pants &amp; Leggings</a></li>
-                                            <li><a href="#">Rompers &amp; Jumpsuits</a></li>
-                                            <li><a href="#">Shirts &amp; Blouses</a></li>
-                                            <li><a href="#">Shirts</a></li>
-                                            <li><a href="#">Sweaters &amp; Knits</a></li>
+                                    <li data-toggle="collapse" data-target="#men" class="collapsed">
+                                        <a href="#">Men</a>
+                                        <ul class="sub-menu collapse {{ isset($type) && $type == 'Men' ? 'in' : '' }}" id="men">
+                                            @foreach ($categories as $item)
+                                                @if ($item->category_type == "2")
+                                                    <li><a href="/shop/Men/{{ $item->category_name }}">{{ $item->category_name }}</a></li>
+                                                @endif
+                                            @endforeach
                                         </ul>
                                     </li>
                                     <!-- Single Item -->
-                                    <li data-toggle="collapse" data-target="#accessories" class="collapsed">
-                                        <a href="#">accessories</a>
-                                        <ul class="sub-menu collapse" id="accessories">
-                                            <li><a href="#">All</a></li>
-                                            <li><a href="#">Bodysuits</a></li>
-                                            <li><a href="#">Dresses</a></li>
-                                            <li><a href="#">Hoodies &amp; Sweats</a></li>
-                                            <li><a href="#">Jackets &amp; Coats</a></li>
-                                            <li><a href="#">Jeans</a></li>
-                                            <li><a href="#">Pants &amp; Leggings</a></li>
-                                            <li><a href="#">Rompers &amp; Jumpsuits</a></li>
-                                            <li><a href="#">Shirts &amp; Blouses</a></li>
-                                            <li><a href="#">Shirts</a></li>
-                                            <li><a href="#">Sweaters &amp; Knits</a></li>
+                                    <li data-toggle="collapse" data-target="#kid" class="collapsed">
+                                        <a href="#">Kid</a>
+                                        <ul class="sub-menu collapse {{ isset($type) && $type == 'Kid' ? 'in' : '' }}" id="kid">
+                                            @foreach ($categories as $item)
+                                                @if ($item->category_type == "3")
+                                                    <li><a href="/shop/Kid/{{ $item->category_name }}">{{ $item->category_name }}</a></li>
+                                                @endif
+                                            @endforeach
                                         </ul>
                                     </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- ##### Single Widget ##### -->
-                        <div class="widget price mb-50">
-                            <!-- Widget Title -->
-                            <h6 class="widget-title mb-30">Filter by</h6>
-                            <!-- Widget Title 2 -->
-                            <p class="widget-title2 mb-30">Price</p>
-
-                            <div class="widget-desc">
-                                <div class="slider-range">
-                                    <div data-min="49" data-max="360" data-unit="$" class="slider-range-price ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" data-value-min="49" data-value-max="360" data-label-result="Range:">
-                                        <div class="ui-slider-range ui-widget-header ui-corner-all"></div>
-                                        <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
-                                        <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
-                                    </div>
-                                    <div class="range-price">Range: $49.00 - $360.00</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ##### Single Widget ##### -->
-                        <div class="widget color mb-50">
-                            <!-- Widget Title 2 -->
-                            <p class="widget-title2 mb-30">Color</p>
-                            <div class="widget-desc">
-                                <ul class="d-flex">
-                                    <li><a href="#" class="color1"></a></li>
-                                    <li><a href="#" class="color2"></a></li>
-                                    <li><a href="#" class="color3"></a></li>
-                                    <li><a href="#" class="color4"></a></li>
-                                    <li><a href="#" class="color5"></a></li>
-                                    <li><a href="#" class="color6"></a></li>
-                                    <li><a href="#" class="color7"></a></li>
-                                    <li><a href="#" class="color8"></a></li>
-                                    <li><a href="#" class="color9"></a></li>
-                                    <li><a href="#" class="color10"></a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- ##### Single Widget ##### -->
-                        <div class="widget brands mb-50">
-                            <!-- Widget Title 2 -->
-                            <p class="widget-title2 mb-30">Brands</p>
-                            <div class="widget-desc">
-                                <ul>
-                                    <li><a href="#">Asos</a></li>
-                                    <li><a href="#">Mango</a></li>
-                                    <li><a href="#">River Island</a></li>
-                                    <li><a href="#">Topshop</a></li>
-                                    <li><a href="#">Zara</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -152,7 +91,7 @@
                                 <div class="product-topbar d-flex align-items-center justify-content-between">
                                     <!-- Total Products -->
                                     <div class="total-products">
-                                        <p><span>186</span> products found</p>
+                                        <p><span>{{ count($products) }}</span> products found</p>
                                     </div>
                                     <!-- Sorting -->
                                     <div class="product-sorting d-flex">
@@ -173,7 +112,7 @@
 
                         <div class="row">
                             
-                            @foreach ($filteredProducts as $product)
+                            @foreach ($products as $product)
                             <!-- Single Product -->
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <div class="single-product-wrapper">
@@ -205,10 +144,14 @@
                                             <div class="hover-content">
                                                 <!-- Add to Cart -->
                                                 <div class="add-to-cart-btn">
-                                                    <a href="#" class="btn essence-btn"><i class="fa fa-shopping-bag"></i> Add</a>
+                                                    <form action="/cart" method="POST">
+                                                        @csrf
+                                                        
+                                                        <button type="submit" name="product_id" class="btn essence-btn" value="{{ $product->id }}"><i class="fa fa-shopping-bag"></i> Add</button>
+                                                    </form>
                                                 </div>
                                                 <div class="buy-now-btn">
-                                                    <a href="#" class="btn essence-btn danger"><i class="fa fa-truck"></i> Buy</a>
+                                                    <a href="/checkout?item={{ $product->id }}" class="btn essence-btn danger"><i class="fa fa-truck"></i> Buy</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -218,17 +161,7 @@
                         </div>
                     </div>
                     <!-- Pagination -->
-                    <nav aria-label="navigation">
-                        <ul class="pagination mt-50 mb-70">
-                            <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-left"></i></a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#">21</a></li>
-                            <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right"></i></a></li>
-                        </ul>
-                    </nav>
+                    {{ $products->links() }}
                 </div>
             </div>
         </div>

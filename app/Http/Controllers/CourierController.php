@@ -47,16 +47,19 @@ class CourierController extends Controller
     public function store(Request $request)
     {
         if(isset($request->name)){
-            $name = $request->name;
+            $name = strtolower($request->name);
+            $count = Courier::where("courier", $name)->count();
 
-            date_default_timezone_set('Asia/Kuala_Lumpur');
-            $courier = new Courier;
-            $courier->courier = $name;
-            $courier->status = '1';
-            $courier->save();
+            if($count == 0){
+                date_default_timezone_set('Asia/Kuala_Lumpur');
+                $courier = new Courier;
+                $courier->courier = $name;
+                $courier->status = '1';
+                $courier->save();
 
-            return redirect()->action('CourierController@index')->with("success", "Successfully create courier");
-            
+                return redirect()->action('CourierController@index')->with("success", "Successfully create courier");
+            }
+            return redirect()->action('CourierController@create')->with("warning", "Courier already exists");
         }
         return redirect()->action('CourierController@create')->with("warning", "Please fill in all fields");
     }
@@ -94,12 +97,16 @@ class CourierController extends Controller
     {
         if(isset($request->name)){
             $name = $request->name;
+            $courier_data = Courier::where("courier", $name)->first();
 
-            date_default_timezone_set('Asia/Kuala_Lumpur');
-            $courier->courier = $name;
-            $courier->save();
+            if($courier->id == $courier_data->id){
+                date_default_timezone_set('Asia/Kuala_Lumpur');
+                $courier->courier = $name;
+                $courier->save();
 
-            return redirect()->action('CourierController@index')->with("success", "Successfully edit courier");
+                return redirect()->action('CourierController@index')->with("success", "Successfully edit courier");
+            }
+            return redirect()->action('CourierController@edit', ["courier" => $courier])->with("warning", "Courier already exists");
         }
         return redirect()->action('CourierController@edit', ["courier" => $courier])->with("warning", "Please fill in all fields");
     }

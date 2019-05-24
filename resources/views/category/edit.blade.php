@@ -108,6 +108,15 @@
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name" class="form-control" placeholder="Category name" value="{{ $category->category_name }}" />
                     </div>
+                    <div class="form-group">
+                        <label for="type">Type</label>
+                        <select name="type" id="type" class="form-control">
+                            <option value="">None</option>
+                            <option value="1" {{ $category->category_type == '1' ? 'selected' : '' }}>Women</option>
+                            <option value="2" {{ $category->category_type == '2' ? 'selected' : '' }}>Men</option>
+                            <option value="3" {{ $category->category_type == '3' ? 'selected' : '' }}>Kid</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="box-footer">
                     <button type="submit" class="btn btn-primary">Submit</button>

@@ -30,8 +30,7 @@ class ProductImageController extends Controller
      */
     public function index()
     {
-        $products = Product::where('status', '1')->get();
-        return view('product-image.index', compact("products"));
+        
     }
 
     /**

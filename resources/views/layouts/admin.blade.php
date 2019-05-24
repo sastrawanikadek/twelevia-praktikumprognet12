@@ -11,7 +11,7 @@
         <!-- Bootstrap 3.3.2 -->
         <link href="{{ asset("bower_components/bootstrap/dist/css/bootstrap.min.css") }}" rel="stylesheet" type="text/css" />
         <!-- Font Awesome Icons -->
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <!-- Ionicons -->
         <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
@@ -40,6 +40,12 @@
             .sidebar-menu>li.active>a {
                 border-left-color: #1abc9c !important;
             }
+            .skin-blue .main-header li.user-header {
+                background-color: #1abc9c !important;
+            }
+            .skin-blue .main-header .navbar .sidebar-toggle:hover {
+                background-color: #149077 !important;
+            }
         </style>
         @yield('css')
     </head>
@@ -64,7 +70,7 @@
           </div>
           <!-- /.content-wrapper -->
           <footer class="main-footer">
-            <strong>Copyright &copy; <?php echo date("Y"); ?> Universitas Udayana.</strong> All rights
+            <strong>Copyright &copy; <?php echo date("Y"); ?>.</strong> All rights
             reserved.
           </footer>
         </div>

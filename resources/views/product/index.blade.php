@@ -60,6 +60,16 @@
                                     <td>{{ $newProducts[$i]->product_rate }}</td>
                                     <td>{{ str_limit($newProducts[$i]->description, 50, " ...") }}</td>
                                     <td>
+                                        <form action="/admin/product-image/{{ $newProducts[$i]->id }}" method="GET" class="btn-group">
+                                            <button type="submit" class="btn btn-primary" title="Show">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </form>
+                                        <form action="/admin/discount/{{ $newProducts[$i]->id }}" method="GET" class="btn-group">
+                                            <button type="submit" class="btn btn-primary" title="Discount">
+                                                <i class="fa fa-tags"></i>
+                                            </button>
+                                        </form>
                                         <form action="/admin/product/{{ $newProducts[$i]->id }}/edit" method="GET" class="btn-group">
                                             <button type="submit" class="btn btn-warning" title="Edit">
                                                 <i class="fa fa-pencil-square-o"></i>
