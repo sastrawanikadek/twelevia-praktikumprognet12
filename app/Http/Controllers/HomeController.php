@@ -26,6 +26,13 @@ class HomeController extends Controller
      */
     public function index($status = 'not-pay')
     {
+        $transactions = DB::table("transactions")->where("transactions.user_id", Auth::id())
+                        ->where("transactions.timeout", "<", date("Y-m-d H:i:s"))
+                        ->where("transactions.status", "notyetpaid")
+                        ->update([
+                            "status" => "expired"
+                        ]);
+
         if($status == 'not-pay'){
             $transactions = DB::table("transactions")
                             ->where("transactions.user_id", Auth::id())
@@ -45,6 +52,7 @@ class HomeController extends Controller
             $transactions = DB::table("transactions")
                             ->where("transactions.user_id", Auth::id())
                             ->where("transactions.status", "delivered")
+                            ->orWhere("transactions.status", "reviewed")
                             ->get();
         } elseif($status == "expired"){
             $transactions = DB::table("transactions")

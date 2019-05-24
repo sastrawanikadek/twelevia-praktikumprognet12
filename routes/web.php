@@ -22,7 +22,9 @@ Route::get('/shop/{type}/{category}', 'PageController@shopByCategory');
 Route::get('/checkout', 'PageController@checkout');
 Route::get('/profile', 'HomeController@profile');
 Route::get('/admin/transactions', 'AdminTransactionController@index');
+Route::get('/admin/responses', 'AdminTransactionController@review');
 Route::get('/transactions/{id}', 'UserTransactionController@create');
+Route::get('/transactions/{id}/review', 'UserTransactionController@show');
 
 Route::post('/login/admin', 'Auth\LoginController@adminLogin');
 Route::post('/register/admin', 'Auth\RegisterController@adminRegister');
@@ -34,6 +36,10 @@ Route::post('/cart', 'CartController@store');
 Route::post('/shipping', 'PageController@calculateShipping');
 Route::post('/checkout', 'PageController@checkoutProduct');
 Route::post('/transactions/{id}', 'UserTransactionController@store');
+Route::post('/transactions/{id}/review', 'UserTransactionController@review');
+Route::post('/admin/transactions/{id}/verified', 'AdminTransactionController@verified');
+Route::post('/admin/transactions/{id}/delivered', 'AdminTransactionController@delivered');
+Route::post('/admin/responses', 'AdminTransactionController@response');
 
 Route::delete('/cart/{id}', 'CartController@destroy');
 Route::delete('/transactions/{id}', 'UserTransactionController@destroy');

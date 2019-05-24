@@ -59,10 +59,15 @@
                                     <td>{{ $transactions[$i]->courier }}</td>
                                     <td>{!! isset($transactions[$i]->proof_of_payment) ? "<img src='{$transactions[$i]->proof_of_payment}' alt='Proof' height='80'>" : '' !!}</td>
                                     <td>
-                                        <form action="/transactions/{{ $transactions[$i]->id }}/verified" method="POST">
+                                        <form action="/admin/transactions/{{ $transactions[$i]->id }}/verified" method="POST">
                                             @csrf
                                             
-                                            <button class="btn btn-primary" {{ isset($transactions[$i]->proof_of_payment) ? '' : 'disabled'}}>Verified</button>
+                                            <button class="btn btn-primary" {{ isset($transactions[$i]->proof_of_payment) && $transactions[$i]->status == 'unverified' ? '' : 'disabled'}}>Verified</button>
+                                        </form>
+                                        <form action="/admin/transactions/{{ $transactions[$i]->id }}/delivered" method="POST">
+                                            @csrf
+
+                                            <button class="btn btn-primary" {{ $transactions[$i]->status == 'verified'  ? '' : 'disabled'}}>Delivered</button>
                                         </form>
                                     </td>
                                 </tr>

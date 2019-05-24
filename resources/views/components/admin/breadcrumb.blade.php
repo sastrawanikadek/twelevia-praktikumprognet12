@@ -9,6 +9,8 @@
     <h1>Courier</h1>
   @elseif(Request::is('admin/category') || Request::is('admin/category/*'))
     <h1>Category</h1>
+  @elseif(Request::is('admin/transactions'))
+    <h1>Transactions</h1>
   @elseif(Request::is('home') || Request::is('home/*'))
     <h1>Home</h1>
   @elseif(Request::is('profile'))
@@ -26,6 +28,8 @@
       <li class="active">Courier</li>
     @elseif(Request::is('admin/category') || Request::is('admin/category/*'))
       <li class="active">Category</li>
+    @elseif(Request::is('admin/transactions'))
+      <li class="active">Transactions</li>
     @elseif(Request::is('home') || Request::is('home/*'))
       <li class="active">Home</li>
     @elseif(Request::is('profile'))

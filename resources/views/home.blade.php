@@ -37,7 +37,6 @@
         .box-tab .btn h6 {
             line-height: 21px;
         }
-
         
         .product-image {
             width: 150px;
@@ -131,7 +130,7 @@
                                     <h5><span style="margin-right: 16px;">Province</span><span>{{ $transaction->province }}</span></h5>
                                     <h5><span style="margin-right: 16px;">Regency</span><span>{{ $transaction->regency }}</span></h5>
                                     <h5><span style="margin-right: 16px;">Address</span><span>{{ $transaction->address }}</span></h5>
-                                    <h5><span style="margin-right: 16px;">Expire In</span><span>{{ $transaction->timeout }}</span></h5>
+                                    {!! $transaction->status == 'notyetpaid' ? "<h5><span style='margin-right: 16px;'>Expire In</span><span>{$transaction->timeout}</span></h5>" : "" !!}
                                 </div>
                                 <div class="col-xs-12 col-md-6">
                                     <h5><span style="margin-right: 16px;">Sub Total</span><span class="price">{{ $transaction->sub_total }}</span></h5>
@@ -148,6 +147,10 @@
                                             @method("DELETE")
 
                                             <button type="submit" class="btn btn-danger">Cancel</button>
+                                        </form>
+                                    @elseif ($transaction->status == 'delivered')
+                                        <form action="/transactions/{{ $transaction->id }}/review" method="GET">
+                                            <button type="submit" class="btn btn-primary">Review Product</button>
                                         </form>
                                     @endif
                                 </div>

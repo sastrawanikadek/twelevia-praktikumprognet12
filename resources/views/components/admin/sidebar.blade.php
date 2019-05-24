@@ -55,6 +55,12 @@
                         <span>Transactions</span>
                     </a>
                 </li>
+                <li class="{{ Request::is('admin/responses') ? "active" : "" }}">
+                    <a href="/admin/responses">
+                    <i class="fa fa-send-o"></i>
+                        <span>Review Responses</span>
+                    </a>
+                </li>
             @endisset
         </ul>
     </section>
