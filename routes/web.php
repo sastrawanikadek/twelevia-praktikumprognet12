@@ -14,7 +14,7 @@ Auth::routes();
 
 Route::get('/login/admin', 'Auth\LoginController@adminLoginForm');
 Route::get('/register/admin', 'Auth\RegisterController@adminRegisterForm');
-Route::get('/home', 'HomeController@index');
+Route::get('/home/{status?}', 'HomeController@index');
 Route::get('/admin/dashboard', 'DashboardController@index');
 Route::get('/', 'PageController@home');
 Route::get('/shop', 'PageController@shop');
@@ -33,6 +33,7 @@ Route::post('/shipping', 'PageController@calculateShipping');
 Route::post('/checkout', 'PageController@checkoutProduct');
 
 Route::delete('/cart/{id}', 'CartController@destroy');
+Route::delete('/transactions/{id}', 'TransactionController@destroy');
 
 Route::resource('/admin/product', 'ProductController');
 Route::resource('/admin/product-image', 'ProductImageController');

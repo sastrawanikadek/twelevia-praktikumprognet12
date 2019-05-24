@@ -24,16 +24,41 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index($status = 'not-pay')
     {
-        $transactions = DB::table("transactions")->join("transaction_details", "transactions.id", "=", "transaction_details.transaction_id")
+        if($status == 'not-pay'){
+            $transactions = DB::table("transactions")
                             ->where("transactions.user_id", Auth::id())
+                            ->where("transactions.status", "notyetpayed")
                             ->get();
-        $products = Product::join("product_images", "products.id", "=", "product_images.product_id")
-                            ->select("products.*", "product_images.image_name")
+        } elseif($status == "unverified"){
+            $transactions = DB::table("transactions")
+                            ->where("transactions.user_id", Auth::id())
+                            ->where("transactions.status", "unverified")
                             ->get();
+        } elseif($status == "verified"){
+            $transactions = DB::table("transactions")
+                            ->where("transactions.user_id", Auth::id())
+                            ->where("transactions.status", "verified")
+                            ->get();
+        } elseif($status == "delivered"){
+            $transactions = DB::table("transactions")
+                            ->where("transactions.user_id", Auth::id())
+                            ->where("transactions.status", "delivered")
+                            ->get();
+        } elseif($status == "expired"){
+            $transactions = DB::table("transactions")
+                            ->where("transactions.user_id", Auth::id())
+                            ->where("transactions.status", "expired")
+                            ->get();
+        } else {
+            $transactions = DB::table("transactions")
+                            ->where("transactions.user_id", Auth::id())
+                            ->where("transactions.status", "cancelled")
+                            ->get();
+        }
         
-        return view('home', compact('transactions', 'products'));
+        return view('home', compact('transactions'));
     }
 
     public function profile()

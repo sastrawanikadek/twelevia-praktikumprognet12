@@ -87,64 +87,72 @@
             <div class="box-body">
                 <div class="row box-tab">
                     <div class="col-xs-2">
-                        <button class="btn">
+                        <a href="/home/not-pay" class="btn {{ Request::is('home') || Request::is('home/not-pay') ? 'active' : '' }}">
                             <h6><i class="fa fa-credit-card"></i></h6>
                             <h6>Not Pay</h5>
-                        </button>
+                        </a>
                     </div>
                     <div class="col-xs-2">
-                        <button class="btn">
+                        <a href="/home/unverified" class="btn {{ Request::is('home/unverified') ? 'active' : '' }}">
                             <h6><i class="fa fa-circle-o-notch"></i></h6>
                             <h6>Unverified</h5>
-                        </button>
+                        </a>
                     </div>
                     <div class="col-xs-2">
-                        <button class="btn">
+                        <a href="/home/verified" class="btn {{ Request::is('home/verified') ? 'active' : '' }}">
                             <h6><i class="fa fa-check-square-o"></i></h6>
                             <h6>Verified</h5>
-                        </button>
+                        </a>
                     </div>
                     <div class="col-xs-2">
-                        <button class="btn">
+                        <a href="/home/delivered" class="btn {{ Request::is('home/delivered') ? 'active' : '' }}">
                             <h6><i class="fa fa-home"></i></h6>
                             <h6>Delivered</h5>
-                        </button>
+                        </a>
                     </div>
                     <div class="col-xs-2">
-                        <button class="btn">
+                        <a href="/home/expired" class="btn {{ Request::is('home/expired') ? 'active' : '' }}">
                             <h6><i class="fa fa-clock-o"></i></h6>
                             <h6>Expired</h5>
-                        </button>
+                        </a>
                     </div>
                     <div class="col-xs-2">
-                        <button class="btn">
+                        <a href="/home/cancel" class="btn {{ Request::is('home/cancel') ? 'active' : '' }}">
                             <h6><i class="fa fa-times-circle-o"></i></h6>
                             <h6>Cancel</h5>
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="row">
-                    @foreach ($transactions as $transaction)
-                        @foreach ($products as $product)
-                            @if ($product->id == $transaction->product_id)        
-                                <div class="col-xs-12">
-                                    <div class="single-product">
-                                        <div class="pull-left">
-                                            <div class="product-image">
-                                                <img src="{{ $product->image_name }}" alt="{{ $product->product_name }}">
-                                            </div>
-                                        </div>
-                                        <div class="pull-left">
-                                            <h5>{{ $product->product_name }}</h5>
-                                            <h5 class="price">{{ $product->price }}</h5>
-                                            <h5>Expire In: {{ $transaction->timeout }}</h5>
-            
-                                            <button class="btn btn-primary">Upload Payment Proof</button>
-                                        </div>
-                                    </div>
+                    @foreach ($transactions as $transaction) 
+                        <div class="col-xs-12">
+                            <div class="single-product">
+                                <div class="col-xs-12 col-md-6">
+                                    <h5><span style="margin-right: 16px;">Province</span><span>{{ $transaction->province }}</span></h5>
+                                    <h5><span style="margin-right: 16px;">Regency</span><span>{{ $transaction->regency }}</span></h5>
+                                    <h5><span style="margin-right: 16px;">Address</span><span>{{ $transaction->address }}</span></h5>
+                                    <h5><span style="margin-right: 16px;">Expire In</span><span>{{ $transaction->timeout }}</span></h5>
                                 </div>
-                            @endif
-                        @endforeach
+                                <div class="col-xs-12 col-md-6">
+                                    <h5><span style="margin-right: 16px;">Sub Total</span><span class="price">{{ $transaction->sub_total }}</span></h5>
+                                    <h5><span style="margin-right: 16px;">Shipping Cost</span><span class="price">{{ $transaction->shipping_cost }}</span></h5>
+                                    <h5><span style="margin-right: 16px;">Total</span><span class="price">{{ $transaction->total }}</span></h5>
+                                </div>
+                                <div class="col-xs-12">
+                                    @if ($transaction->status == "notyetpayed")
+                                        <form action="/transactions/{{ $transaction->id }}" method="GET">
+                                            <button type="submit" class="btn btn-primary">Upload Payment Proof</button>
+                                        </form>
+                                        <form action="/transactions/{{ $transaction->id }}" method="POST">
+                                            @csrf
+                                            @method("DELETE")
+
+                                            <button type="submit" class="btn btn-danger">Cancel</button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
                     @endforeach
                 </div>
             </div>
