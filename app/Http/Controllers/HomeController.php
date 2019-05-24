@@ -29,7 +29,7 @@ class HomeController extends Controller
         if($status == 'not-pay'){
             $transactions = DB::table("transactions")
                             ->where("transactions.user_id", Auth::id())
-                            ->where("transactions.status", "notyetpayed")
+                            ->where("transactions.status", "notyetpaid")
                             ->get();
         } elseif($status == "unverified"){
             $transactions = DB::table("transactions")

@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use DB;
+
+class UserTransactionController extends Controller
+{
+        /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        \Cloudinary::config(array(
+            "cloud_name" => "dbpbpokhx",
+            "api_key" => "224568426731156",
+            "api_secret" => "BrRWdDBVJlaS1f8zmbUNNTk6Ymg"
+        ));
+    }
+
+    public function create($id)
+    {
+        return view("user.upload-payment", compact("id"));
+    }
+
+    public function store(Request $request, $id)
+    {
+        if(isset($request->profile_image)){
+            if($request->file("profile_image")->extension() == "jpg" || $request->file("profile_image")->extension() == "png" || 
+            $request->file("profile_image")->extension() == "jpeg"){
+                if(($request->file("profile_image")->getSize() / 1000) <= 1024){
+                    $upload = \Cloudinary\Uploader::upload($request->file("profile_image"));
+
+                    DB::table('transactions')->where("id", $id)->update([
+                        "proof_of_payment" => $upload["secure_url"],
+                        "status" => "unverified"
+                    ]);
+                    return redirect()->intended("/home");
+                }
+                return redirect()->back()->with("warning", "Maximum size is 1MB");
+            }
+            return redirect()->back()->with("warning", "Only jpg, jpeg, or png are allowed");
+        }
+        return redirect()->back()->with("warning", "Please fill in all fields");
+    }
+
+    public function destroy($id)
+    {
+        DB::table("transactions")->where("id", $id)->update([
+            "status" => "cancelled"
+        ]);
+
+        return redirect()->back();
+    }
+}

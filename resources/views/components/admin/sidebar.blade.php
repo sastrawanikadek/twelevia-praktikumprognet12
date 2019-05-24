@@ -49,6 +49,12 @@
                         <span>Courier</span>
                     </a>
                 </li>
+                <li class="{{ Request::is('admin/transactions') ? "active" : "" }}">
+                    <a href="/admin/transactions">
+                    <i class="fa fa-shopping-bag"></i>
+                        <span>Transactions</span>
+                    </a>
+                </li>
             @endisset
         </ul>
     </section>

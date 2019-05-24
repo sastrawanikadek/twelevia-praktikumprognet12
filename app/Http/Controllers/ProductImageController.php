@@ -87,7 +87,7 @@ class ProductImageController extends Controller
     {
         $products = Product::where('status', '1')->get();
         $images = DB::table('product_images')->where("product_id", $id)->get();
-        return view('product-image.show', compact("products", "images"));
+        return view('product-image.show', compact("products", "images", "id"));
     }
 
     /**

@@ -139,7 +139,7 @@
                                     <h5><span style="margin-right: 16px;">Total</span><span class="price">{{ $transaction->total }}</span></h5>
                                 </div>
                                 <div class="col-xs-12">
-                                    @if ($transaction->status == "notyetpayed")
+                                    @if ($transaction->status == "notyetpaid")
                                         <form action="/transactions/{{ $transaction->id }}" method="GET">
                                             <button type="submit" class="btn btn-primary">Upload Payment Proof</button>
                                         </form>

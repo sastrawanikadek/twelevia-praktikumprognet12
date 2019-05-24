@@ -32,7 +32,7 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">List of Product Image</h3>
                     <form action="/admin/product-image/create" method="GET">
-                        <button type="submit" id="create" class="btn btn-primary" name="id" value="{{ $images[0]->product_id }}"><i class="fa fa-plus"></i>Create Product Image</button>
+                        <button type="submit" id="create" class="btn btn-primary" name="id" value="{{ $id }}"><i class="fa fa-plus"></i>Create Product Image</button>
                     </form>
                 </div>
                 <div class="box-body">
