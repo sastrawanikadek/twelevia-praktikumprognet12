@@ -101,9 +101,9 @@
                                     @endforeach
                                 @endisset
 
-                                <li><span>Subtotal</span> <span class="price">{{ $price }}</span></li>
+                                <li><span>Subtotal</span> <span class="sub price">{{ $price }}</span></li>
                                 <li><span>Shipping</span> <span class="shipping price">0</span></li>
-                                <li><span>Total</span> <span class="price">{{ $price }}</span></li>
+                                <li><span>Total</span> <span class="total price">{{ $price }}</span></li>
                             </ul>
                             
                             <input type="hidden" name="product_id" value="{{ implode(',', $id) }}" />
@@ -175,6 +175,7 @@
                     $("#shipping").change(function(){
                         const selectedOption = $(this).children("option:selected");
                         $(".shipping.price").eq(0).text('Rp' + parseInt(selectedOption.val()).toLocaleString(['ban', 'id']));
+                        $(".total.price").eq(0).text('Rp' + (parseInt($(".sub.price").eq(0).text().substr(2).replace(".", "")) + parseInt(selectedOption.val())).toLocaleString(['ban','id']));
                     });
                 }
             });

@@ -124,26 +124,42 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-12">
-                        <div class="single-product">
-                            <div class="pull-left">
-                                <div class="product-image">
-                                    <img src="https://mm-imgs.s3.amazonaws.com/p/2017/08/18/08/ladies-fashion-dress-bunga-2f-gaun-wanita-2f-dress-flower-brukat-2f-baju-dress-2f-ho_4153200_1_20671.jpg" alt="">
+                    @foreach ($transactions as $transaction)
+                        @foreach ($products as $product)
+                            @if ($product->id == $transaction->product_id)        
+                                <div class="col-xs-12">
+                                    <div class="single-product">
+                                        <div class="pull-left">
+                                            <div class="product-image">
+                                                <img src="{{ $product->image_name }}" alt="{{ $product->product_name }}">
+                                            </div>
+                                        </div>
+                                        <div class="pull-left">
+                                            <h5>{{ $product->product_name }}</h5>
+                                            <h5 class="price">{{ $product->price }}</h5>
+                                            <h5>Expire In: {{ $transaction->timeout }}</h5>
+            
+                                            <button class="btn btn-primary">Upload Payment Proof</button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="pull-left">
-                                <h5>Nama Produk</h5>
-                                <h5>Harga Produk</h5>
-                                <h5>Expire In: Date</h5>
-
-                                <button class="btn btn-primary">Upload Payment Proof</button>
-                            </div>
-                        </div>
-                    </div>
+                            @endif
+                        @endforeach
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
   </div>
   <!-- /.row -->
+@endsection
+
+@section('script')
+    <script>
+        $('.price').each(function(index, element){
+            const price = parseInt(element.innerText);
+
+            element.innerText = 'Rp' + price.toLocaleString(['ban','id']);
+        });
+    </script>
 @endsection

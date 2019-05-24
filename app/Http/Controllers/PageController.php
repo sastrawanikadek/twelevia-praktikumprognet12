@@ -190,9 +190,57 @@ class PageController extends Controller
         $courier = $request->courier;
         $shipping = $request->shipping;
         $regency = $request->regency;
-        $product_id = explode(",", $request->product_id);
+        $products_id = explode(",", $request->product_id);
+        $sub_total = 0;
+        $total = 0;
 
+        foreach ($products_id as $product_id) {
+            $product = Product::find($product_id);
+            $sub_total += intval($product->price);
+        }
+
+        $shipping = intval($shipping);
+        $total += $sub_total;
+        $total += $shipping;
+
+        date_default_timezone_set('Asia/Kuala_Lumpur');
+
+        DB::table('transactions')->insert([
+            "timeout" => date("Y-m-d H:i:s", strtotime("+7 day")),
+            "address" => $address,
+            "regency" => $regency,
+            "province" => $province,
+            "total" => $total,
+            "shipping_cost" => $shipping,
+            "sub_total" => $sub_total,
+            "user_id" => Auth::id(),
+            "courier_id" => $courier,
+            "status" => "notyetpaid" 
+        ]);
+        $transaction_id = DB::getPdo()->lastInsertId();
         
+        foreach($products_id as $product_id){
+            $product = Product::find($product_id);
+            $real_price = $product->price;
+            $discount = DB::table("discounts")->where("id_product", $product->id)
+                            ->where("start", ">=", date("Y-m-d"))
+                            ->where("end", "<=", date("Y-m-d"))
+                            ->first();
+            $percentage = isset($discount->percentage) ? $discount->percentage : 0;
+            $discount_price = $real_price * $percentage / 100;
+            $selling_price = $real_price - $discount_price;
+
+            DB::table('transaction_details')->insert([
+                "transaction_id" => $transaction_id,
+                "product_id" => $product->id,
+                "qty" => 1,
+                "discount" => $discount_price,
+                "real_price" => $real_price,
+                "selling_price" => $selling_price
+            ]);
+        }
+
+        return redirect()->intended("/home");
     }
 
     public function calculateShipping(Request $request)
