@@ -40,6 +40,7 @@ Route::post('/transactions/{id}/review', 'UserTransactionController@review');
 Route::post('/admin/transactions/{id}/verified', 'AdminTransactionController@verified');
 Route::post('/admin/transactions/{id}/delivered', 'AdminTransactionController@delivered');
 Route::post('/admin/responses', 'AdminTransactionController@response');
+Route::post('/report', 'DashboardController@report');
 
 Route::delete('/cart/{id}', 'CartController@destroy');
 Route::delete('/transactions/{id}', 'UserTransactionController@destroy');

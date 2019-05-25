@@ -175,7 +175,7 @@
                     $("#shipping").change(function(){
                         const selectedOption = $(this).children("option:selected");
                         $(".shipping.price").eq(0).text('Rp' + parseInt(selectedOption.val()).toLocaleString(['ban', 'id']));
-                        $(".total.price").eq(0).text('Rp' + (parseInt($(".sub.price").eq(0).text().substr(2).replace(".", "")) + parseInt(selectedOption.val())).toLocaleString(['ban','id']));
+                        $(".total.price").eq(0).text('Rp' + (parseInt($(".sub.price").eq(0).text().substr(2).replace(/\./g, "")) + parseInt(selectedOption.val())).toLocaleString(['ban','id']));
                     });
                 }
             });

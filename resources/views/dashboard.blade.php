@@ -1,96 +1,79 @@
-{{-- @extends('layouts.app')
-
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection --}}
-
 @extends('layouts.admin')
 
 @section('title')
   Dashboard
 @endsection
 
+@section('css')
+  <!-- Morris charts -->
+  <link rel="stylesheet" href="{{ asset("bower_components/morris.js/morris.css") }}">
+@endsection
+
 @section('content')
   <!-- Small boxes (Stat box) -->
   <div class="row">
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-aqua">
-        <div class="inner">
-          <h3>150</h3>
+    <div class="col-xs-12 text-center">
+      <div class="col-xs-12 col-md-3">
+        <div class="form-group">
+          <label for="date">Year</label>
+          <input type="date" name="date" id="date" class="form-control" style="width: calc(100% - 50px); display: inline-block; margin-top: 30px;">
+        </div>
+      </div>
 
-          <p>New Orders</p>
+      <div class="col-xs-12">
+        <!-- LINE CHART -->
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Transaction Report</h3>
+          </div>
+          <div class="box-body chart-responsive">
+            <div class="chart" id="line-chart" style="height: 400px;"></div>
+          </div>
+          <!-- /.box-body -->
         </div>
-        <div class="icon">
-          <i class="ion ion-bag"></i>
-        </div>
-        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        <!-- /.box -->
       </div>
     </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-green">
-        <div class="inner">
-          <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-          <p>Bounce Rate</p>
-        </div>
-        <div class="icon">
-          <i class="ion ion-stats-bars"></i>
-        </div>
-        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-yellow">
-        <div class="inner">
-          <h3>44</h3>
-
-          <p>User Registrations</p>
-        </div>
-        <div class="icon">
-          <i class="ion ion-person-add"></i>
-        </div>
-        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-red">
-        <div class="inner">
-          <h3>65</h3>
-
-          <p>Unique Visitors</p>
-        </div>
-        <div class="icon">
-          <i class="ion ion-pie-graph"></i>
-        </div>
-        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-      </div>
-    </div>
-    <!-- ./col -->
   </div>
   <!-- /.row -->
+@endsection
+
+@section('script')
+    <!-- Morris.js charts -->
+    <script src="{{ asset("bower_components/raphael/raphael.min.js") }}"></script>
+    <script src="{{ asset("bower_components/morris.js/morris.min.js") }}"></script>
+    <script>
+      $("#date").change(function(){
+        const year = new Date($(this).val()).getFullYear();
+
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: 'POST',
+            url: '/report',
+            dataType: 'json',
+            data: {
+                'year': year
+            },
+            success: function(result){
+              result.map(function(data){
+                data.value = parseInt(data.value)
+              });
+
+              var line = new Morris.Line({
+                element: 'line-chart',
+                resize: true,
+                data: result,
+                xkey: 'y',
+                ykeys: ['Value'],
+                labels: ['Value'],
+                lineColors: ['#1abc9c'],
+                hideHover: 'auto',
+                parseTime: false
+              });
+            }
+        });
+      });
+    </script>
 @endsection
